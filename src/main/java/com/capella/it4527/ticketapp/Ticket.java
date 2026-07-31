@@ -1,6 +1,23 @@
 package com.capella.it4527.ticketapp;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-public class Ticket {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(
+                value = TaskTicket.class,
+                name = "task"
+        ),
+        @JsonSubTypes.Type(
+                value = BugTicket.class,
+                name = "bug"
+        )
+})
+
+public abstract class Ticket {
 
     private int id;
     private String title;
