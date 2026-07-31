@@ -76,4 +76,26 @@ public class TicketController {
 
         return null;
     }
+    @DeleteMapping("/ticket/delete")
+    public String deleteTicket(@RequestParam int id) {
+        String fileName = id + ".txt";
+        Path filePath = Path.of(fileName);
+        try {
+            boolean deleted = Files.deleteIfExists(filePath);
+
+            if (deleted) {
+                return fileName;
+            }
+
+        } catch (IOException exception) {
+            System.out.println(
+                    "The ticket could not be deleted: "
+                            + exception.getMessage()
+            );
+        }
+
+        return "";
+        
+    }
+    
 }
