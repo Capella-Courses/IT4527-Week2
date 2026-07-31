@@ -4,29 +4,62 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class TicketController {
 
-    @PostMapping("/ticket/put")
-    public String putTicket(@RequestBody Ticket ticket) {
+   @PostMapping("/ticket/post")
+    public String postTicket(@RequestBody Ticket ticket) {
 
-       String fileName = ticket.getId() + ".txt";
-       Path filePath = Path.of(fileName);
+        String fileName = ticket.getId() + ".txt";
+        Path filePath = Path.of(fileName);
 
         try {
+            // POST creates a new ticket only.
+            if (Files.exists(filePath)) {
+                return "Ticket already exists.";
+            }
+
             Files.writeString(filePath, ticket.toString());
             return fileName;
+
         } catch (IOException exception) {
-            return "The ticket could not be saved: " + exception.getMessage();
+            System.out.println(
+                    "The ticket could not be created: "
+                            + exception.getMessage()
+            );
+
+            return "";
+        }
+    }
+
+    @PutMapping("/ticket/put")
+    public String putTicket(@RequestBody Ticket ticket) {
+
+        String fileName = ticket.getId() + ".txt";
+        Path filePath = Path.of(fileName);
+
+        try {
+            // PUT updates or replaces the ticket file.
+            Files.writeString(filePath, ticket.toString());
+            return fileName;
+
+        } catch (IOException exception) {
+            System.out.println(
+                    "The ticket could not be updated: "
+                            + exception.getMessage()
+            );
+
+            return "";
         }
     }
 
