@@ -99,12 +99,20 @@ public class TicketController {
             }
 
         } catch (IOException exception) {
-            System.out.println("The ticket could not be read: "
-                    + exception.getMessage());
+            System.out.println(
+                    "The ticket could not be read: "
+                            + exception.getMessage()
+            );
+
         } catch (NumberFormatException exception) {
-            System.out.println("A number in the ticket file is invalid.");
+            System.out.println(
+                    "The ticket file contains an invalid number."
+            );
+
         } catch (ArrayIndexOutOfBoundsException exception) {
-            System.out.println("The ticket file does not contain all required fields.");
+            System.out.println(
+                    "The ticket file is missing information."
+            );
         }
 
         return null;
